@@ -31,7 +31,7 @@ I used ggplot2 to visualize the relationship between variables tip and distance.
 library(ggplot2)
 ```
 
-A box plot suggests that the may be a relationship between the distance traveled and tips granted. 
+A box plot suggests that there may be a relationship between the distance traveled and tips granted. 
 
 ```{r}
 #| label: distance-tip-boxplot
@@ -49,9 +49,6 @@ ggplot(taxi, aes(x = tip, y = distance, fill = tip)) +
 ```
 A t test shows that the average distance for rides that received a tip was approximately 6.37 miles and that the the average distance for rides that did not receive a tip was approximately 4.57 miles. The mean distance for tipping rides is about 1.8 miles longer than non-tipping rides ($6.37 - 4.57$). 
 
-In conclusion, there is a statistically significant difference in the mean trip distance between rides that received a tip and those that did not. Customers are significantly more likely to leave a tip on longer trips compared to shorter ones. 
-
-
 ```{r}
 #| label: two-sample-t-test
 # Perform the Two-Sample t-Test (Distance ~ Tip)
@@ -61,7 +58,7 @@ t_test_result <- t.test(distance ~ tip, data = taxi)
 # Print the results of the t-test
 print(t_test_result)
 ```
-
+In conclusion, there is a statistically significant difference in the mean trip distance between rides that received a tip and those that did not. Customers are significantly more likely to leave a tip on longer trips compared to shorter ones. 
 
 ## Question 2 
 

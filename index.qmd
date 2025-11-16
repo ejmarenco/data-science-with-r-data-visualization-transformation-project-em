@@ -4,6 +4,10 @@ author: "Eduardo Marenco"
 subtitle: "Investigation into Chicago taxis"
 echo: false
 bibliography: references.bib
+execute: 
+  warning: false
+fig-width: 6
+fig-asp: 0.618
 ---
 
 ## Packages 
@@ -16,10 +20,7 @@ library(tidymodels)
 library(scales)
 ```
 
-First, I took a look to the data set to get a sense of the data.
-
-
-View(taxi)
+First, I took a look to the data set to get a sense of the data using View(taxi)
 
 ## Question 1
 
@@ -31,7 +32,7 @@ I used ggplot2 to visualize the relationship between variables tip and distance.
 library(ggplot2)
 ```
 
-A box plot suggests that there may be a relationship between the distance traveled and tips granted. 
+A box plot suggests that there may be a relationship between the distance traveled and tips granted. In fact, a density plot shows clearly that the distribution of tips concentrates below the 20 miles distance threshold as shown below where the peak for tipped trips (in red) is higher than for the trips with no tip status given.
 
 ```{r}
 #| label: distance-tip-boxplot
@@ -47,6 +48,18 @@ ggplot(taxi, aes(x = tip, y = distance, fill = tip)) +
   ) +
   theme_minimal()
 ```
+```{r}
+#| label: distance-tip-density plot
+#| fig-cap: "Distribution of Trip Distance by Tipping Status"
+ggplot(
+  taxi,
+  aes(x = distance, color = tip, fill = tip)
+) +
+  geom_density(alpha = 0.5)
+```
+
+
+
 A t test shows that the average distance for rides that received a tip was approximately 6.37 miles and that the the average distance for rides that did not receive a tip was approximately 4.57 miles. The mean distance for tipping rides is about 1.8 miles longer than non-tipping rides ($6.37 - 4.57$). 
 
 ```{r}

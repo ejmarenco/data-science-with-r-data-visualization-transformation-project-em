@@ -102,18 +102,27 @@ window.Quarto = {
 
 <section id="packages" class="level2">
 <h2 class="anchored" data-anchor-id="packages">Packages</h2>
-<p>First, I took a look to the data set to get a sense of the data.</p>
-<p>View(taxi)</p>
+<p>First, I took a look to the data set to get a sense of the data using View(taxi)</p>
 </section>
 <section id="question-1" class="level2">
 <h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
 <p>I used ggplot2 to visualize the relationship between variables tip and distance.</p>
-<p>A box plot suggests that there may be a relationship between the distance traveled and tips granted.</p>
+<p>A box plot suggests that there may be a relationship between the distance traveled and tips granted. In fact, a density plot shows clearly that the distribution of tips concentrates below the 20 miles distance threshold as shown below where the peak for tipped trips (in red) is higher than for the trips with no tip status given.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
 <figure class="figure">
-<p><img src="index_files/figure-html/distance-tip-boxplot-1.png" class="img-fluid figure-img" width="672"></p>
+<p><img src="index_files/figure-html/distance-tip-boxplot-1.png" class="img-fluid figure-img" width="576"></p>
+<figcaption>Distribution of Trip Distance by Tipping Status</figcaption>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="cell-output-display">
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><img src="index_files/figure-html/distance-tip-density%20plot-1.png" class="img-fluid figure-img" width="576"></p>
 <figcaption>Distribution of Trip Distance by Tipping Status</figcaption>
 </figure>
 </div>

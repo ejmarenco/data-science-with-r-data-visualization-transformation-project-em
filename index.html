@@ -152,7 +152,7 @@ mean in group yes  mean in group no
 </section>
 <section id="question-2" class="level2">
 <h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
-<p>We want to know if people tip driver from the company Chicago Independents more than other driver of other companies. I created a contingency table and a proportion table to examine the data. Then, I created a bar plot to check the relationship between tip rates and companies.</p>
+<p>We want to know if people tip drivers from the company Chicago Independents more than drivers of other companies. I created a contingency table and a proportion table to examine the data. Then, I created a bar plot to check the relationship between tip rates and companies.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>                              
@@ -184,8 +184,8 @@ mean in group yes  mean in group no
 </div>
 </div>
 </div>
-<p>Next, I performed a Chi-squared test to formally examine the relationship between tip (a binary/dichotomous variable) and company (categorical). I created a new variable to compare the company Chicago Independents with the rest of companies which is the most concrete relationship that we are asked to examine.</p>
-<p>Based on the p-value obtained in this test (.003) we can reject the null hypothesis that there is not association between the taxi company group (Chicago Independent vs others) and the tipping outcome and we can conclude that data strongly suggests that the tipping rate for Chicago Independents is significantly higher (94.88 percent) than for other companies (91.85 percent) at the five percent level of signi</p>
+<p>Next, I performed a Chi-squared test to formally examine the relationship between tip (a binary/dichotomous variable) and company (categorical). I created a new variable to compare the company Chicago Independents with the rest of companies which is the most concrete relationship that we were asked to examine.</p>
+<p>Based on the p-value obtained in this test (.003) we can reject the null hypothesis that there is not association between the taxi company group (Chicago Independent vs others) and the tipping outcome and we can conclude that data strongly suggests that the tipping rate for Chicago Independents is significantly higher (94.88 percent) than for other companies (91.85 percent) at the five percent level of significance.</p>
 <div class="cell">
 <div class="cell-output cell-output-stdout">
 <pre><code>
@@ -209,6 +209,50 @@ X-squared = 8.6318, df = 1, p-value = 0.003303</code></pre>
 </section>
 <section id="your-own-question" class="level2">
 <h2 class="anchored" data-anchor-id="your-own-question">Your own question</h2>
+<p>I wanted to know which of the variables of the data set taxi would be a significant predictor of tip (a binary variable). Thus, I ran a logistic regression model to answer this question. From the output we can see that distance is a significant predictor for tipping rates along with levelsthe trip starting and ending in locations from different communities. Also, people tend to tip more during the month of April and people tend not to tip particular companies, probably due to poor service. Finally, for some reason, people tip less on Friday.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] "no"  "yes"</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Call:
+glm(formula = tip ~ distance + company + local + dow + month + 
+    hour, family = "binomial", data = taxi)
+
+Coefficients:
+                                     Estimate Std. Error z value Pr(&gt;|z|)    
+(Intercept)                          2.555766   0.269303   9.490  &lt; 2e-16 ***
+distance                             0.027121   0.006151   4.409 1.04e-05 ***
+companyCity Service                 -0.394194   0.197392  -1.997  0.04582 *  
+companyFlash Cab                    -0.979825   0.188041  -5.211 1.88e-07 ***
+companySun Taxi                     -0.175873   0.198047  -0.888  0.37452    
+companyTaxi Affiliation Services    -0.619529   0.183602  -3.374  0.00074 ***
+companyTaxicab Insurance Agency Llc -0.408739   0.195711  -2.088  0.03675 *  
+companyother                        -0.363270   0.178927  -2.030  0.04233 *  
+localno                              0.255077   0.091869   2.777  0.00549 ** 
+dowMon                              -0.270518   0.176132  -1.536  0.12457    
+dowTue                              -0.229876   0.171807  -1.338  0.18090    
+dowWed                              -0.111694   0.172430  -0.648  0.51714    
+dowThu                              -0.067815   0.170871  -0.397  0.69146    
+dowFri                              -0.330319   0.171098  -1.931  0.05354 .  
+dowSat                              -0.155178   0.192792  -0.805  0.42088    
+monthFeb                             0.037852   0.118160   0.320  0.74871    
+monthMar                             0.108699   0.110165   0.987  0.32380    
+monthApr                             0.221230   0.112622   1.964  0.04949 *  
+hour                                 0.005217   0.008600   0.607  0.54409    
+---
+Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+
+(Dispersion parameter for binomial family taken to be 1)
+
+    Null deviance: 5531.3  on 9999  degrees of freedom
+Residual deviance: 5417.3  on 9981  degrees of freedom
+AIC: 5455.3
+
+Number of Fisher Scoring iterations: 5</code></pre>
+</div>
+</div>
 </section>
 
 </main>

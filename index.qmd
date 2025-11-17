@@ -80,10 +80,11 @@ In conclusion, there is a statistically significant difference in the mean trip 
 
 ## Question 2
 
-We want to know if people tip driver from the company Chicago Independents more than other driver of other companies. I created a contingency table and a proportion table to examine the data. Then, I created a bar plot to check the relationship between tip rates and companies.
+We want to know if people tip drivers from the company Chicago Independents more than drivers of other companies. I created a contingency table and a proportion table to examine the data. Then, I created a bar plot to check the relationship between tip rates and companies.
 
 ```{r}
 #| label: company-tip-contingency tabl-bar plot
+#| echo: false
 #Creating a Contingency Table to examine the variable
 # This shows the counts for each combination of 'company' and 'tip'
 contingency_table <- table(taxi$company, taxi$tip)
@@ -132,9 +133,9 @@ ggplot(plot_data_long, aes(x = company, y = proportion, fill = tip_status)) +
   theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-Next, I performed a Chi-squared test to formally examine the relationship between tip (a binary/dichotomous variable) and company (categorical). I created a new variable to compare the company Chicago Independents with the rest of companies which is the most concrete relationship that we are asked to examine.
+Next, I performed a Chi-squared test to formally examine the relationship between tip (a binary/dichotomous variable) and company (categorical). I created a new variable to compare the company Chicago Independents with the rest of companies which is the most concrete relationship that we were asked to examine.
 
-Based on the p-value obtained in this test (.003) we can reject the null hypothesis that there is not association between the taxi company group (Chicago Independent vs others) and the tipping outcome and we can conclude that data strongly suggests that the tipping rate for Chicago Independents is significantly higher (94.88 percent) than for other companies (91.85 percent) at the five percent level of signi
+Based on the p-value obtained in this test (.003) we can reject the null hypothesis that there is not association between the taxi company group (Chicago Independent vs others) and the tipping outcome and we can conclude that data strongly suggests that the tipping rate for Chicago Independents is significantly higher (94.88 percent) than for other companies (91.85 percent) at the five percent level of significance.
 
 ```{r}
 #| label: company-tip-chi squared test
@@ -155,3 +156,33 @@ print(indep_chi_square_result)
 ```
 
 ## Your own question
+
+I wanted to know which of the variables of the data set taxi would be a significant predictor of tip (a binary variable). Thus, I ran a logistic regression model to answer this question. From the output we can see that distance is a significant predictor for tipping rates along with levelsthe trip starting and ending in locations from different communities. Also, people tend to tip more during the month of April and people tend not to tip particular companies, probably due to poor service. Finally, for some reason, people tip less on Friday.
+
+```{r}
+#| label: tip-rest of variables-logistic regression
+# Load the necessary tidyverse library (dplyr is useful for any data prep)
+library(dplyr) 
+
+# --- Prepare/Verify the Data (Recommended Step) ---
+# Ensure 'tip' is a factor and the desired outcome level ('yes') is the reference level (if needed)
+# For logistic regression, R models the probability of the SECOND factor level.
+# To ensure R models P(tip = "yes"), you may need to reorder levels if "yes" is not second.
+# Check current levels: levels(taxi$tip)
+# If levels are c("no", "yes"), then P(tip = "yes") is modeled.
+# If levels are c("yes", "no"), R models P(tip = "no").
+# To explicitly model P(tip = "yes"):
+taxi$tip <- factor(taxi$tip, levels = c("no", "yes")) 
+print(levels(taxi$tip)) # Output should now be: [1] "no" "yes"
+
+# --- Run the Logistic Regression Model ---
+
+# Model formula: tip is predicted by all other relevant variables.
+# We omit 'Time' as it seems irrelevant based on its description.
+logistic_model <- glm(tip ~ distance + company + local + dow + month + hour, 
+                      data = taxi, 
+                      family = "binomial")
+
+# Print the model summary to see coefficients, p-values, and model fit statistics
+summary(logistic_model)
+```

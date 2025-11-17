@@ -100,24 +100,28 @@ window.Quarto = {
 </header>
 
 
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This is an exercise from the course on Data Visualization imparted by Professor Mine Cetinkaya and Professor Elijah Meyer at Duke University via Coursera. We will work with the data set taxi that contains information about tipping rates for 10,000 trips in the city of Chicago in 2022. The purpose of the exercise is to show proficiency in data exploration, data transformation, data visualization and statistical analysis based on two questions formulated by the Professors. First, I will upload the packages that I will use, then I will answer the two questions, and finally, I will answer a question formulated on my own.</p>
+</section>
 <section id="packages" class="level2">
 <h2 class="anchored" data-anchor-id="packages">Packages</h2>
-<p>First, I took a look to the data set to get a sense of the data using View(taxi)</p>
+<p>First, I took a look at the data set to get a sense of the data using View(taxi), glimpse and ?taxi commands.</p>
 </section>
 <section id="question-1" class="level2">
 <h2 class="anchored" data-anchor-id="question-1">Question 1</h2>
-<p>I used ggplot2 to visualize the relationship between variables tip and distance.</p>
-<p>A box plot suggests that there may be a relationship between the distance traveled and tips granted. In fact, a density plot shows clearly that the distribution of tips concentrates below the 20 miles distance threshold as shown below where the peak for tipped trips (in red) is higher than for the trips with no tip status given.</p>
+<p>I used ggplot2 to visualize the relationship between the variables tip and distance.</p>
+<p>A box plot suggests that there may be a relationship between the distance traveled and tips left.</p>
 <div class="cell">
 <div class="cell-output-display">
-<div class="quarto-figure quarto-figure-center">
+<div>
 <figure class="figure">
 <p><img src="index_files/figure-html/distance-tip-boxplot-1.png" class="img-fluid figure-img" width="576"></p>
-<figcaption>Distribution of Trip Distance by Tipping Status</figcaption>
 </figure>
 </div>
 </div>
 </div>
+<p>In fact, a density plot shows clearly that the distribution of tips concentrates below the 20 miles distance threshold, as shown below, where the peak for tipped trips (in red) is higher than for trips with no tip given.</p>
 <div class="cell">
 <div class="cell-output-display">
 <div class="quarto-figure quarto-figure-center">
@@ -148,6 +152,59 @@ mean in group yes  mean in group no
 </section>
 <section id="question-2" class="level2">
 <h2 class="anchored" data-anchor-id="question-2">Question 2</h2>
+<p>We want to know if people tip the company Independents more than other companies based on the tips left to drivers from different companies. The following contingency table and bar plot shows that it looks that that may not be the case.</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>                              
+                                yes   no
+  Chicago Independents          741   40
+  City Service                 1100   87
+  Flash Cab                     878  132
+  Sun Taxi                     1298   84
+  Taxi Affiliation Services    1534  160
+  Taxicab Insurance Agency Llc 1139   92
+  other                        2519  196</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                              
+                                      yes         no
+  Chicago Independents         0.94878361 0.05121639
+  City Service                 0.92670598 0.07329402
+  Flash Cab                    0.86930693 0.13069307
+  Sun Taxi                     0.93921852 0.06078148
+  Taxi Affiliation Services    0.90554900 0.09445100
+  Taxicab Insurance Agency Llc 0.92526401 0.07473599
+  other                        0.92780847 0.07219153</code></pre>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="index_files/figure-html/company-tip-contingency%20tabl-bar%20plot-1.png" class="img-fluid figure-img" width="576"></p>
+</figure>
+</div>
+</div>
+</div>
+<p>Next, I perform a Chi-squared test to examine the relationship between tip (a binary/dichotomous variable) and company (categorical). I created a new variable to compare Independents with the rest of companies. Based on the p-value obtained we can reject the null hypothesis that there is not association between the taxi company group (Independent vs others) and the tipping outcome and we can conclude that data strongly suggests that the tipping rate for Chicago Independents is significantly higher (94.88 percent) than for other companies (91.85 percent).</p>
+<div class="cell">
+<div class="cell-output cell-output-stdout">
+<pre><code>
+Chicago Independents                Other 
+                 781                 9219 </code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>                      
+                        yes   no
+  Chicago Independents  741   40
+  Other                8468  751</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>
+    Pearson's Chi-squared test with Yates' continuity correction
+
+data:  indep_vs_other_table
+X-squared = 8.6318, df = 1, p-value = 0.003303</code></pre>
+</div>
+</div>
 </section>
 <section id="your-own-question" class="level2">
 <h2 class="anchored" data-anchor-id="your-own-question">Your own question</h2>

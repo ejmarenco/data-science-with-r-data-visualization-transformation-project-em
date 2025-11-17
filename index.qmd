@@ -155,7 +155,7 @@ print(indep_chi_square_result)
 
 ```
 
-## Your own question
+## Good predictors of tipping rate
 
 I wanted to know which of the variables of the data set taxi would be a significant predictor of tip (a binary variable). Thus, I ran a logistic regression model to answer this question. From the output we can see that distance is a significant predictor for tipping rates along with levelsthe trip starting and ending in locations from different communities. Also, people tend to tip more during the month of April and people tend not to tip particular companies, probably due to poor service. Finally, for some reason, people tip less on Friday.
 

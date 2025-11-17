@@ -25,7 +25,7 @@ library(scales)
 
 ```
 
-First, I took a look at the data set to get a sense of the data using View(taxi), glimpse and ?taxi commands.
+First, I took a look at the data set to get a sense of the data using View(taxi), glimpse and ?taxi commands. Throughout this analysis I will rely in the tidyverse, tidymodels, dplyr and scales packages.
 
 ## Question 1
 

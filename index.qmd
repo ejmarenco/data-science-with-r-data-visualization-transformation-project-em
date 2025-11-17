@@ -14,7 +14,7 @@ fig-asp: 0.618
 
 This is an exercise from the course on Data Visualization imparted by Professor Mine Cetinkaya and Professor Elijah Meyer at Duke University via Coursera. We will work with the data set taxi that contains information about tipping rates for 10,000 trips in the city of Chicago in 2022. The purpose of the exercise is to show proficiency in data exploration, data transformation, data visualization and statistical analysis based on two questions formulated by the Professors. First, I will upload the packages that I will use, then I will answer the two questions, and finally, I will answer a question formulated on my own.
 
-## Packages 
+## Packages
 
 ```{r}
 #| warning: false
@@ -24,6 +24,7 @@ library(tidymodels)
 library(scales)
 
 ```
+
 First, I took a look at the data set to get a sense of the data using View(taxi), glimpse and ?taxi commands.
 
 ## Question 1
@@ -36,7 +37,7 @@ I used ggplot2 to visualize the relationship between the variables tip and dista
 library(ggplot2)
 ```
 
-A box plot suggests that there may be a relationship between the distance traveled and tips left. 
+A box plot suggests that there may be a relationship between the distance traveled and tips left.
 
 ```{r}
 #| label: distance-tip-boxplot
@@ -63,12 +64,7 @@ ggplot(
   geom_density(alpha = 0.5)
 ```
 
-
-
-
-
-
-A t test shows that the average distance for rides that received a tip was approximately 6.37 miles and that the the average distance for rides that did not receive a tip was approximately 4.57 miles. The mean distance for tipping rides is about 1.8 miles longer than non-tipping rides ($6.37 - 4.57$). 
+A t test shows that the average distance for rides that received a tip was approximately 6.37 miles and that the the average distance for rides that did not receive a tip was approximately 4.57 miles. The mean distance for tipping rides is about 1.8 miles longer than non-tipping rides ($6.37 - 4.57$).
 
 ```{r}
 #| label: two-sample-t-test
@@ -79,11 +75,12 @@ t_test_result <- t.test(distance ~ tip, data = taxi)
 # Print the results of the t-test
 print(t_test_result)
 ```
-In conclusion, there is a statistically significant difference in the mean trip distance between rides that received a tip and those that did not. Customers are significantly more likely to leave a tip on longer trips compared to shorter ones. 
 
-## Question 2 
+In conclusion, there is a statistically significant difference in the mean trip distance between rides that received a tip and those that did not. Customers are significantly more likely to leave a tip on longer trips compared to shorter ones.
 
-We want to know if people tip the company Independents more than other companies based on the tips left to drivers from different companies. The following contingency table and bar plot shows that it looks that that may not be the case.
+## Question 2
+
+We want to know if people tip driver from the company Chicago Independents more than other driver of other companies. I created a contingency table and a proportion table to examine the data. Then, I created a bar plot to check the relationship between tip rates and companies.
 
 ```{r}
 #| label: company-tip-contingency tabl-bar plot
@@ -92,29 +89,52 @@ We want to know if people tip the company Independents more than other companies
 contingency_table <- table(taxi$company, taxi$tip)
 print(contingency_table)
 
-# Visualizing Proportions (Optional but helpful)
+# Visualize Proportions (Optional but helpful)
 # Convert to proportions within each company group to see the tipping rate
 prop_table <- prop.table(contingency_table, margin = 1) # margin=1 for row proportions
 print(prop_table)
 
-# We want a color for 'yes' and a color for 'no'
-tip_colors <- c("salmon", "turquoise3")
+# --- Data Preparation using Tidyverse ---
+# 1. Convert the proportional table (matrix) into a data frame
+prop_df <- as.data.frame.matrix(prop_table) 
+# Assign 'company' names from the row names
+prop_df$company <- rownames(prop_table) 
 
-# Bar Plot for Visual Inspection
-# A stacked bar plot or side-by-side bar plot can visually compare tipping rates
-barplot(t(prop_table), beside = TRUE, 
-        col = tip_colors, # Use the defined color vector
-        legend.text = TRUE, 
-        main = "Tipping Rate by Taxi Company", 
-        ylab = "Proportion", 
-        xlab = "Taxi Company")
+# 2. Reshape the data from wide to long format using tidyr::pivot_longer()
+plot_data_long <- prop_df %>%
+  pivot_longer(
+    cols = !company, # Pivot all columns EXCEPT 'company'
+    names_to = "tip_status",
+    values_to = "proportion"
+  )
 
-# Add a title to the legend using the names of the 'tip' variable
-legend("topright", legend = colnames(prop_table), fill = tip_colors, title = "Tip Status")
+# --- ggplot Visualization ---
+ggplot(plot_data_long, aes(x = company, y = proportion, fill = tip_status)) +
   
+  # Create the bar plot
+  geom_bar(stat = "identity", position = "stack") +
+  
+  # Apply your specific colors
+  scale_fill_manual(
+    values = c("yes" = "salmon", "no" = "turquoise3"),
+    name = "Tip Given"
+  ) +
+  
+  # Add labels and titles
+  labs(
+    title = "Tipping Rate by Taxi Company (Proportional)",
+    x = "Taxi Company",
+    y = "Proportion of Trips"
+  ) +
+  
+  # Optional: Improve x-axis readability
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 45, hjust = 1))
 ```
 
-Next, I perform a Chi-squared test to examine the relationship between tip (a binary/dichotomous variable) and company (categorical). I created a new variable to compare Independents with the rest of companies. Based on the p-value obtained we can reject the null hypothesis that there is not association between the taxi company group (Independent vs others) and the tipping outcome and we can conclude that data strongly suggests that the tipping rate for Chicago Independents is significantly higher (94.88  percent) than for other companies (91.85 percent).
+Next, I performed a Chi-squared test to formally examine the relationship between tip (a binary/dichotomous variable) and company (categorical). I created a new variable to compare the company Chicago Independents with the rest of companies which is the most concrete relationship that we are asked to examine.
+
+Based on the p-value obtained in this test (.003) we can reject the null hypothesis that there is not association between the taxi company group (Chicago Independent vs others) and the tipping outcome and we can conclude that data strongly suggests that the tipping rate for Chicago Independents is significantly higher (94.88 percent) than for other companies (91.85 percent) at the five percent level of signi
 
 ```{r}
 #| label: company-tip-chi squared test
@@ -134,8 +154,4 @@ print(indep_chi_square_result)
 
 ```
 
-
-
-## Your own question 
-
-
+## Your own question
